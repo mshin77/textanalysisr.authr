@@ -3,11 +3,11 @@ FROM rocker/shiny-verse:latest
 LABEL maintainer="Mikyung Shin <shin.mikyung@gmail.com>"
 LABEL description="Docker image for TextAnalysisR Shiny application"
 
-RUN apt-get update && \
-    apt-get install -y libglpk40 && \
+RUN apt-get update -qq && \
+    apt-get install -y libglpk40 libssl-dev libsasl2-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-    
+
 RUN install2.r -r 'https://packagemanager.rstudio.com/all/__linux__/focal/latest' remotes  
 RUN R -e "install.packages('Matrix', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('ggplot2', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
@@ -32,7 +32,5 @@ RUN R -e "install.packages('shinyBS', repos='https://packagemanager.rstudio.com/
 RUN R -e "install.packages('DT', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('shinycssloaders', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('quanteda.textstats', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
-
-
-
-
+RUN R -e "install.packages('devtools', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
+RUN R -e "devtools::install_github('mshin77/TextAnalysisR')"
