@@ -1,7 +1,7 @@
 FROM rocker/shiny-verse:latest
 
 LABEL maintainer="Mikyung Shin <shin.mikyung@gmail.com>"
-LABEL description="Docker image for TextAnalysisR Shiny application"
+LABEL description="Docker image for TextAnalysisR: Text Mining Workflow Tools (Version 0.0.2)"
 
 RUN apt-get update -qq && \
     apt-get install -y libglpk40 libssl-dev libsasl2-dev && \
@@ -22,7 +22,7 @@ RUN R -e "install.packages('tidytext', repos='https://packagemanager.rstudio.com
 RUN R -e "install.packages('textmineR', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('tibble', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages(c('stats', 'scales', 'readxl'), repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
-RUN R -e "install.packages('ggraph', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
+RUN R -e "install.packages(c('ggraph', 'igraph'), , repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('ggdendro', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('widyr', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('markdown', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
