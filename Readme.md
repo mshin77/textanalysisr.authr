@@ -11,7 +11,7 @@ docker stop textanalysisr \
 docker rm textanalysisr \
 rm -rf textanalysisr.app \
 git clone https://github.com/mshin77/textanalysisr.app.git \
-cd apps/textanalysisr.app \ 
+cd apps/textanalysisr.app \
 git pull \
 docker pull mshin77/textanalysisr.authr \
 docker run -d --name textanalysisr -p 3838:3838 mshin77/textanalysisr.authr:latest \
