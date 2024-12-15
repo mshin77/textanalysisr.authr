@@ -14,8 +14,8 @@ git clone https://github.com/mshin77/textanalysisr.app.git \
 cd apps/textanalysisr.app \
 git pull \
 docker pull mshin77/textanalysisr.authr \
+cd rstudio_docker \
 docker run -d --name textanalysisr -p 3838:3838 mshin77/textanalysisr.authr:latest \
 docker images \
 docker rmi <DOCKER_IMAGE_ID> \
-cd rstudio_docker \
 docker-compose restart
