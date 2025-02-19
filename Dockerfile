@@ -21,8 +21,8 @@ RUN R -e "install.packages('tidyr', repos='https://packagemanager.rstudio.com/al
 RUN R -e "install.packages('tidytext', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('textmineR', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('tibble', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
-RUN R -e "install.packages(c('stats', 'scales', 'readxl', 'broom', 'pdftools', 'officer', 'dotenv', 'httr', 'jsonlite', 'spacyr'), repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
-RUN R -e "install.packages(c('ggraph', 'igraph', 'progress', 'RColorBrewer', 'MASS', 'pscl', 'htmltools'), , repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
+RUN R -e "install.packages(c('stats', 'scales', 'readxl', 'broom', 'pdftools', 'officer', 'dotenv', 'httr', 'jsonlite'), repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
+RUN R -e "install.packages(c('ggraph', 'igraph', 'progress', 'RColorBrewer', 'MASS', 'pscl', 'htmltools'), repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('ggdendro', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('widyr', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('markdown', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
@@ -34,3 +34,4 @@ RUN R -e "install.packages('shinycssloaders', repos='https://packagemanager.rstu
 RUN R -e "install.packages('quanteda.textstats', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "install.packages('devtools', repos='https://packagemanager.rstudio.com/all/__linux__/focal/latest')"
 RUN R -e "devtools::install_github('mshin77/TextAnalysisR')"
+
