@@ -130,8 +130,9 @@ RUN install2.r -r ${CRAN_MIRROR} \
     spacyr \
     koRpus
 
-# Install TextAnalysisR from GitHub
-RUN R -e "remotes::install_github('mshin77/TextAnalysisR', dependencies = TRUE)"
+# Install TextAnalysisR from GitHub (cache busts when repo has new commits)
+ADD "https://api.github.com/repos/mshin77/TextAnalysisR/commits/HEAD" /tmp/textanalysisr_version
+RUN R -e "remotes::install_github('mshin77/TextAnalysisR', dependencies = TRUE, force = TRUE)"
 
 # Expose Shiny port
 EXPOSE 3838
