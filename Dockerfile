@@ -39,6 +39,9 @@ RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
 ENV SPACY_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 ENV LD_LIBRARY_PATH=/usr/lib/python3/config-3.12-x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
 
+# Enable Docker detection for TextAnalysisR (enables Python/spaCy features)
+ENV TEXTANALYSISR_DOCKER=true
+
 # Set CRAN mirror
 ENV CRAN_MIRROR=https://packagemanager.posit.co/cran/__linux__/jammy/latest
 
