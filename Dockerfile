@@ -66,6 +66,7 @@ RUN install2.r -r ${CRAN_MIRROR} \
     quanteda \
     quanteda.textstats \
     tidytext \
+    tidylo \
     stm \
     widyr \
     igraph \
