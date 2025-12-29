@@ -28,14 +28,17 @@ RUN apt-get update -qq && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create Python virtual environment and install spaCy
+# Create Python virtual environment and install spaCy + dependencies
 ENV WORKON_HOME=/opt/virtualenvs
 ENV RETICULATE_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
-    /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir spacy && \
+    /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+    spacy>=3.5.0 \
+    pandas>=1.5.0 \
+    pdfplumber>=0.10.0 && \
     /opt/virtualenvs/spacy_virtualenv/bin/python -m spacy download en_core_web_sm
 
-# Set Python environment variables for reticulate/spacyr
+# Set Python environment variables for reticulate
 ENV SPACY_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 ENV LD_LIBRARY_PATH=/usr/lib/python3/config-3.12-x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
 
@@ -128,10 +131,11 @@ RUN install2.r -r ${CRAN_MIRROR} \
     syuzhet \
     textdata
 
-# NLP (Suggests - optional, may need Python setup)
+# UI enhancement packages (Suggests)
 RUN install2.r -r ${CRAN_MIRROR} \
-    spacyr \
-    koRpus
+    colourpicker \
+    digest \
+    stringr
 
 # Install TextAnalysisR from GitHub (cache busts when repo has new commits)
 ADD "https://api.github.com/repos/mshin77/TextAnalysisR/commits/HEAD" /tmp/textanalysisr_version
@@ -144,5 +148,5 @@ EXPOSE 3838
 ENTRYPOINT []
 
 # Run Shiny app directly (echo 'n' to skip Python setup prompt)
-# Set spacyr to use the virtual environment Python with spaCy installed
+# Set reticulate to use the virtual environment Python with spaCy installed
 CMD ["/bin/sh", "-c", "echo 'n' | R -e \"Sys.setenv(RETICULATE_PYTHON='/opt/virtualenvs/spacy_virtualenv/bin/python'); options(shiny.host = '0.0.0.0', shiny.port = 3838, shiny.trace = TRUE); TextAnalysisR::run_app()\""]
