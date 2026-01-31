@@ -34,7 +34,7 @@ ENV RETICULATE_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
     /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
     spacy>=3.5.0 \
-    pandas>=1.5.0 \
+    pandas>=1.5.0,<3.0 \
     pdfplumber>=0.10.0 && \
     /opt/virtualenvs/spacy_virtualenv/bin/python -m spacy download en_core_web_sm
 
