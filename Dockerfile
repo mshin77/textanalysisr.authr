@@ -60,6 +60,9 @@ ENV SPACY_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 # Enable Docker detection for TextAnalysisR (enables Python/spaCy features)
 ENV TEXTANALYSISR_DOCKER=true
 
+# Ollama base URL (host.docker.internal resolves to the host machine)
+ENV OLLAMA_BASE_URL=http://host.docker.internal:11434
+
 # Set CRAN mirror
 ENV CRAN_MIRROR=https://packagemanager.posit.co/cran/__linux__/jammy/latest
 
