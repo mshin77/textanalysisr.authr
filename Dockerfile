@@ -39,11 +39,14 @@ RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
     scikit-learn && \
     /opt/virtualenvs/spacy_virtualenv/bin/python -m spacy download en_core_web_sm
 
-# Deep learning and embedding packages (separate layer for caching)
+# Install CPU-only PyTorch first from the PyTorch index
+RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+    torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
+
+# Deep learning and embedding packages (uses torch already installed above)
 RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
     sentence-transformers>=2.2.0 \
-    transformers>=4.30.0 \
-    torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
+    transformers>=4.30.0
 
 # BERTopic and clustering dependencies
 RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
@@ -157,6 +160,5 @@ EXPOSE 3838
 # Override the default entrypoint from rocker/shiny-verse
 ENTRYPOINT []
 
-# Run Shiny app directly (echo 'n' to skip Python setup prompt)
 # Set reticulate to use the virtual environment Python with spaCy installed
 CMD ["/bin/sh", "-c", "echo 'n' | R -e \"Sys.setenv(RETICULATE_PYTHON='/opt/virtualenvs/spacy_virtualenv/bin/python'); options(shiny.host = '0.0.0.0', shiny.port = 3838, shiny.trace = TRUE); TextAnalysisR::run_app()\""]
