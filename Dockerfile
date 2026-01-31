@@ -28,19 +28,31 @@ RUN apt-get update -qq && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create Python virtual environment and install spaCy + dependencies
+# Create Python virtual environment with all dependencies
 ENV WORKON_HOME=/opt/virtualenvs
 ENV RETICULATE_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
 RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
     /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
     spacy>=3.5.0 \
-    pandas>=1.5.0,<3.0 \
-    pdfplumber>=0.10.0 && \
+    "pandas>=1.5.0,<3.0" \
+    pdfplumber>=0.10.0 \
+    scikit-learn && \
     /opt/virtualenvs/spacy_virtualenv/bin/python -m spacy download en_core_web_sm
+
+# Deep learning and embedding packages (separate layer for caching)
+RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+    sentence-transformers>=2.2.0 \
+    transformers>=4.30.0 \
+    torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
+
+# BERTopic and clustering dependencies
+RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+    bertopic \
+    umap-learn \
+    hdbscan
 
 # Set Python environment variables for reticulate
 ENV SPACY_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
-ENV LD_LIBRARY_PATH=/usr/lib/python3/config-3.12-x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
 
 # Enable Docker detection for TextAnalysisR (enables Python/spaCy features)
 ENV TEXTANALYSISR_DOCKER=true
@@ -87,10 +99,7 @@ RUN install2.r -r ${CRAN_MIRROR} \
     shinyjs \
     shinybusy \
     shinyBS \
-    shinycssloaders \
     shinyWidgets \
-    shinydashboard \
-    bslib \
     DT \
     htmltools \
     htmlwidgets \
