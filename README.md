@@ -6,10 +6,11 @@ Pre-built Docker image for [TextAnalysisR](https://mshin77.github.io/TextAnalysi
 
 ```bash
 docker build -t mshin77/textanalysisr.authr .
-docker tag mshin77/textanalysisr.authr mshin77/textanalysisr.authr
 docker push mshin77/textanalysisr.authr:latest
 docker pull mshin77/textanalysisr.authr
 docker run -p 3838:3838 mshin77/textanalysisr.authr
+
+# docker build --no-cache -t textanalysisr . 
 ```
 
 ## On the Virtual Server
@@ -31,4 +32,6 @@ docker images
 docker rmi <DOCKER_IMAGE_ID>
 docker-compose down && docker-compose up -d
 docker-compose restart
+
+# docker logs -f shiny
 ```
