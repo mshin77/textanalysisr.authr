@@ -23,13 +23,13 @@ cd textanalysisr.app
 git pull
 docker pull mshin77/textanalysisr.authr
 cd rstudio_docker
-docker run -d --name textanalysisr -p 3838:3838 mshin77/textanalysisr.authr:latest
 docker ps
 docker stop <DOCKER_CONTAINER>
 docker rm <DOCKER_CONTAINER>
 docker ps -a
 docker images
 docker rmi <DOCKER_IMAGE_ID>
+docker run -d --name textanalysisr -p 3838:3838 mshin77/textanalysisr.authr:latest
 docker-compose down && docker-compose up -d
 docker-compose restart
 
