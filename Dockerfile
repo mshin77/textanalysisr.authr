@@ -1,4 +1,4 @@
-FROM rocker/shiny-verse:latest
+FROM rocker/shiny-verse:4.4.2
 
 LABEL maintainer="Mikyung Shin <shin.mikyung@gmail.com>"
 LABEL description="Docker image for TextAnalysisR: Text Mining Workflow Tool (Version 0.0.3)"
@@ -30,32 +30,32 @@ RUN apt-get update -qq && \
 
 # Create Python virtual environment with all dependencies
 ENV WORKON_HOME=/opt/virtualenvs
-ENV RETICULATE_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
-RUN python3 -m venv /opt/virtualenvs/spacy_virtualenv && \
-    /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+ENV RETICULATE_PYTHON=/opt/virtualenvs/textanalysisr-env/bin/python
+RUN python3 -m venv /opt/virtualenvs/textanalysisr-env && \
+    /opt/virtualenvs/textanalysisr-env/bin/pip install --no-cache-dir \
     spacy>=3.5.0 \
     "pandas>=1.5.0,<3.0" \
     pdfplumber>=0.10.0 \
     scikit-learn && \
-    /opt/virtualenvs/spacy_virtualenv/bin/python -m spacy download en_core_web_sm
+    /opt/virtualenvs/textanalysisr-env/bin/python -m spacy download en_core_web_sm
 
 # Install CPU-only PyTorch first from the PyTorch index
-RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+RUN /opt/virtualenvs/textanalysisr-env/bin/pip install --no-cache-dir \
     torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
 
 # Deep learning and embedding packages (uses torch already installed above)
-RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+RUN /opt/virtualenvs/textanalysisr-env/bin/pip install --no-cache-dir \
     sentence-transformers>=2.2.0 \
     transformers>=4.30.0
 
 # BERTopic and clustering dependencies
-RUN /opt/virtualenvs/spacy_virtualenv/bin/pip install --no-cache-dir \
+RUN /opt/virtualenvs/textanalysisr-env/bin/pip install --no-cache-dir \
     bertopic \
     umap-learn \
     hdbscan
 
 # Set Python environment variables for reticulate
-ENV SPACY_PYTHON=/opt/virtualenvs/spacy_virtualenv/bin/python
+ENV SPACY_PYTHON=/opt/virtualenvs/textanalysisr-env/bin/python
 
 # Enable Docker detection for TextAnalysisR (enables Python/spaCy features)
 ENV TEXTANALYSISR_DOCKER=true
@@ -163,5 +163,4 @@ EXPOSE 3838
 # Override the default entrypoint from rocker/shiny-verse
 ENTRYPOINT []
 
-# Set reticulate to use the virtual environment Python with spaCy installed
-CMD ["/bin/sh", "-c", "echo 'n' | R -e \"Sys.setenv(RETICULATE_PYTHON='/opt/virtualenvs/spacy_virtualenv/bin/python'); options(shiny.host = '0.0.0.0', shiny.port = 3838, shiny.trace = TRUE); TextAnalysisR::run_app()\""]
+CMD ["Rscript", "-e", "Sys.setenv(RETICULATE_PYTHON='/opt/virtualenvs/textanalysisr-env/bin/python'); options(shiny.host='0.0.0.0', shiny.port=3838, shiny.trace=TRUE); TextAnalysisR::run_app()"]
