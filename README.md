@@ -35,3 +35,21 @@ docker-compose restart
 
 # docker logs -f shiny
 ```
+
+## Updating Base Images
+
+After extended periods without rebuilding, pull fresh base images before rebuilding to get OS-level security patches.
+
+```bash
+# Pull latest base images
+docker pull rocker/shiny-verse:4.4.2
+docker pull nginx:latest
+
+# Rebuild with no cache to ensure fresh system packages
+docker build --no-cache -t mshin77/textanalysisr.authr .
+docker push mshin77/textanalysisr.authr:latest
+
+# On the virtual server, pull the updated image and restart
+docker pull mshin77/textanalysisr.authr:latest
+docker-compose down && docker-compose up -d
+```
